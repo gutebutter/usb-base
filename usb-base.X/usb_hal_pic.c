@@ -58,6 +58,12 @@ void usb_init() {
     usb_bdt[1].adrl = USB_EP0_IN_BASE & 0xFF;
     usb_bdt[1].cnt = USB_EP0_IN_BASE >> 8;
     
-    // endpoint 0 configuration
+    // endpoint 0 configuration, bidirectional, do not block SETUP transfers
+    UEP0bits.EPINEN = 1;
+    UEP0bits.EPOUTEN = 1;    
     
+    UCFGbits.UPUEN = 1; // use device internal Dx pullups
+    UCFGbits.FSEN = 1; // full-speed configuration
+    // lets go, clock has to be setup prior to setting this bit
+    UCONbits.USBEN = 1;
 }
